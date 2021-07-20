@@ -14,7 +14,7 @@ public class DrawRing : MonoBehaviour
     public float radiusMultiplier = 1.5f;
 
     LineRenderer line;
-    [SerializeField] Material mat;
+    [SerializeField] Material mat = null;
     [SerializeField] float widthVal = 0.2f;
 
     [SerializeField] LayerMask mask = 1 << 9;

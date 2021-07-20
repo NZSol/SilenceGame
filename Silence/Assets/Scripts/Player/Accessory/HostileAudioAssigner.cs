@@ -9,9 +9,8 @@ public class HostileAudioAssigner : MonoBehaviour
 
 
     float audioLevelSource;
-    float audioLevelEnd = 0;
 
-    [SerializeField] AnimationCurve audioFalloff;
+    [SerializeField] AnimationCurve audioFalloff = new AnimationCurve();
 
     
     void Start()
