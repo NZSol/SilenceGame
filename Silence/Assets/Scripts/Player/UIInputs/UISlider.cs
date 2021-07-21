@@ -10,6 +10,7 @@ public class UISlider : MonoBehaviour
 
     CharMovement playerMover = null;
 
+
     [Range(-50, 50)]
     public float sliderX, sliderY;
 
@@ -25,7 +26,6 @@ public class UISlider : MonoBehaviour
         transformer = GetComponent<RectTransform>();
     }
 
-    float timer = 0;
     // Update is called once per frame
     void Update()
     {
@@ -40,7 +40,6 @@ public class UISlider : MonoBehaviour
         {
             sliderPos = sliderPos.normalized * 50;
         }
-        transformer.anchoredPosition = Vector3.Lerp((Vector3)sliderPos, Vector3.zero, timer);
         Vector2 ValToSend = sliderPos / 50;
         playerMover.UIMoveInput(ValToSend);
     }

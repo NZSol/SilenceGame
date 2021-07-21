@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -20,16 +21,13 @@ public class CharMovement : MonoBehaviour
     bool canMove = true;
     bool InputsDetected = false;
 
+    PlayerInput input = null;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        input = GetComponent<PlayerInput>();
     }
 
     public void UIMoveInput(Vector2 value)
@@ -41,24 +39,28 @@ public class CharMovement : MonoBehaviour
         }
     }
 
-    public void MoveInput(CallbackContext context)
+
+    void Update()
     {
-        if (context.started)
-        {
-            InputsDetected = true;
-        }
-        if (context.canceled)
+        Vector2 stick = input.actions["Move"].ReadValue<Vector2>();
+        if (stick == Vector2.zero)
         {
             InputsDetected = false;
         }
-        Vector2 stick = context.ReadValue<Vector2>();
+        else
+        {
+            InputsDetected = true;
+        }
         lookDir = stick;
         moveVals = new Vector3(stick.x, 0, stick.y);
+        float horizontal = moveVals.x;
+        float vertical = moveVals.z;
     }
 
 
     void FixedUpdate()
     {
+        
         MoveFunc();
     }
 

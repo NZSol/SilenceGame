@@ -18,6 +18,7 @@ public class CamRotate : MonoBehaviour
 
     bool inputsPrimed = true;
 
+
     void Start()
     {
         movement = Player.GetComponent<CharMovement>();
@@ -68,9 +69,9 @@ public class CamRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         movement.forwardVector = transform.forward;
         movement.rightVector = transform.right;
-        gameObject.transform.position = Player.transform.position;
         if (startCount)
         {
             timer += Time.deltaTime * timerSpeedModifier;
@@ -81,5 +82,10 @@ public class CamRotate : MonoBehaviour
             }
         }
         gameObject.transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(targetRotation), timer);
+    }
+
+    private void LateUpdate()
+    {
+        gameObject.transform.position = Player.transform.position;
     }
 }
