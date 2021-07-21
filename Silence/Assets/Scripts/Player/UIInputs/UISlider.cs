@@ -36,7 +36,6 @@ public class UISlider : MonoBehaviour
         sliderY = Mathf.Clamp(sliderY, -50, 50);
 
         sliderPos = new Vector2(sliderX, sliderY);
-        print(sliderPos.magnitude);
         if (sliderPos.magnitude > 50)
         {
             sliderPos = sliderPos.normalized * 50;
@@ -45,4 +44,6 @@ public class UISlider : MonoBehaviour
         Vector2 ValToSend = sliderPos / 50;
         playerMover.UIMoveInput(ValToSend);
     }
+
+
 }

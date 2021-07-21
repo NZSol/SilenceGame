@@ -18,6 +18,7 @@ public class CharMovement : MonoBehaviour
     public float speed = 5f;
 
     bool canMove = true;
+    bool InputsDetected = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +34,23 @@ public class CharMovement : MonoBehaviour
 
     public void UIMoveInput(Vector2 value)
     {
-        lookDir = value;
-        moveVals = new Vector3(value.x, 0, value.y);
+        if (!InputsDetected)
+        {
+            lookDir = value;
+            moveVals = new Vector3(value.x, 0, value.y);
+        }
     }
 
     public void MoveInput(CallbackContext context)
     {
+        if (context.started)
+        {
+            InputsDetected = true;
+        }
+        if (context.canceled)
+        {
+            InputsDetected = false;
+        }
         Vector2 stick = context.ReadValue<Vector2>();
         lookDir = stick;
         moveVals = new Vector3(stick.x, 0, stick.y);
