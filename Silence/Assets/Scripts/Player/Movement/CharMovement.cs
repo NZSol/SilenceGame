@@ -22,12 +22,15 @@ public class CharMovement : MonoBehaviour
     bool InputsDetected = false;
 
     PlayerInput input = null;
+    GameObject camObj = null;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         input = GetComponent<PlayerInput>();
+        camObj = Camera.main.gameObject.transform.parent.gameObject;
+        print(camObj.name);
     }
 
     public void UIMoveInput(Vector2 value)
@@ -35,7 +38,7 @@ public class CharMovement : MonoBehaviour
         if (!InputsDetected)
         {
             lookDir = value;
-            moveVals = new Vector3(value.x, 0, value.y);
+            moveVals = (value.x * rightVector) + (value.y * forwardVector);
         }
     }
 
@@ -52,9 +55,8 @@ public class CharMovement : MonoBehaviour
             InputsDetected = true;
         }
         lookDir = stick;
-        moveVals = new Vector3(stick.x, 0, stick.y);
-        float horizontal = moveVals.x;
-        float vertical = moveVals.z;
+        moveVals = (stick.x * rightVector) + (stick.y * forwardVector);
+        print(moveVals);
     }
 
 
