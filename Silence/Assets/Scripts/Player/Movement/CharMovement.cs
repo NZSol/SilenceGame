@@ -37,7 +37,11 @@ public class CharMovement : MonoBehaviour
     {
         if (!InputsDetected)
         {
-            lookDir = value;
+            Vector3 moveDir = (value.x * rightVector) + (value.y * forwardVector);
+            if (moveDir != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
+            }
             moveVals = (value.x * rightVector) + (value.y * forwardVector);
         }
     }
@@ -54,9 +58,14 @@ public class CharMovement : MonoBehaviour
         {
             InputsDetected = true;
         }
-        lookDir = stick;
+        Vector3 moveDir = (stick.x * rightVector) + (stick.y * forwardVector);
+        if (moveDir != Vector3.zero)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
+        }
         moveVals = (stick.x * rightVector) + (stick.y * forwardVector);
         print(moveVals);
+        
     }
 
 
@@ -75,15 +84,10 @@ public class CharMovement : MonoBehaviour
     Vector3 storedVel = Vector3.zero;
     void MoveFunc()
     {
-        //Make character face direction moving in
-        if (moveVals.magnitude != 0)
-        {
-            transform.eulerAngles = new Vector3(0, Mathf.Atan2(lookDir.x, lookDir.y) * 180 / Mathf.PI, 0);
-        }
         //Normalize value if magnitude > 1
         if (moveVals.magnitude > 1)
         {
-            moveVals = moveVals.normalized;
+            //moveVals = moveVals.normalized;
         }
 
         if (moveVals != Vector3.zero && canMove)
