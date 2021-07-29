@@ -69,7 +69,6 @@ public class CamRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         movement.forwardVector = transform.forward;
         movement.rightVector = transform.right;
         if (startCount)
