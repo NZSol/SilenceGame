@@ -610,6 +610,9 @@ MonoBehaviour:
   forwardVector: {x: 0, y: 0, z: 1}
   rightVector: {x: 1, y: 0, z: 0}
   speed: 5
+  jumpForce: 50
+  fallRate: 0
+  canJump: 1
   minDampingMod: 1
   maxDampingMod: 3
 --- !u!54 &742125643
