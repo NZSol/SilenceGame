@@ -19,6 +19,8 @@ public class DrawRing : MonoBehaviour
 
     [SerializeField] LayerMask mask = 1 << 9;
 
+    [SerializeField] GameObject AudioMask = null;
+
     Vector3 playerOffset = Vector3.zero;
 
     public bool UpdateSizeOnCheck = false;
@@ -75,6 +77,7 @@ public class DrawRing : MonoBehaviour
 
             angle += (360f / segments);
         }
+        AudioMask.transform.localScale = Vector3.one * ((radius * 2) / 10);
     }
 
     float FindYVal(float x, float z)
