@@ -17,9 +17,12 @@ public class CharMovement : MonoBehaviour
     Vector2 lookDir = Vector2.zero;
 
     public float speed = 5f;
+    [SerializeField] float jumpForce = 50f;
+    [SerializeField] float fallRate = 0f;
 
     bool canMove = true;
     bool InputsDetected = false;
+    [SerializeField] bool canJump = true;
 
     PlayerInput input = null;
     GameObject camObj = null;
@@ -46,22 +49,33 @@ public class CharMovement : MonoBehaviour
         }
     }
 
+    bool grounded()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.up * -1, out hit, 1.1f))
+        {
+            Debug.DrawRay(transform.position, transform.up * -1.1f, Color.red);
+            if (hit.transform != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     Vector3 moveDir = Vector3.zero;
-    public void charMovement(CallbackContext context)
-    {
-    }
-    Vector3 vertical = Vector3.zero;
-    public void Jump(CallbackContext context)
-    {
-        vertical = context.ReadValue<float>() * Vector3.up;
-    }
-
-
+    Vector3 jumpVal = Vector3.zero;
     void Update()
     {
         Vector2 stick = input.actions["Move"].ReadValue<Vector2>();
-        Vector3 vertical = input.actions["Jump"].ReadValue<float>() * Vector3.up;
-
+        float vertical = input.actions["Jump"].ReadValue<float>();
+        switch (grounded() && vertical != 0)
+        {
+            case true:
+                jumpVal = (vertical * Vector3.up) * jumpForce;
+                canJump = false;
+                break;
+        }
         switch (stick == Vector2.zero)
         {
             case true:
@@ -79,15 +93,11 @@ public class CharMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
         }
-        moveVals = moveVals + vertical;
-        print(moveVals);
     }
 
 
     void FixedUpdate()
-
     {
-        
         MoveFunc();
     }
 
@@ -100,15 +110,24 @@ public class CharMovement : MonoBehaviour
     Vector3 storedVel = Vector3.zero;
     void MoveFunc()
     {
-        //Normalize value if magnitude > 1
-        if (moveVals.magnitude > 1)
+        rb.velocity += jumpVal;
+        jumpVal *= 0.75f;
+        switch (grounded())
         {
-            //moveVals = moveVals.normalized;
+            case true:
+                fallRate = 0;
+                break;
+            case false:
+                //Multiply value increasing by time.deltatime
+                fallRate += Time.deltaTime;
+                fallRate += (fallRate * Time.deltaTime);
+                jumpVal -= fallRate * Vector3.up;
+                rb.velocity += jumpVal;
+                print(jumpVal);
+                break;
         }
-
         if (moveVals != Vector3.zero && canMove)
         {
-
             stoppingTimer = 0;   //Assign stopping Lerp timer to 0
             rb.velocity = moveVals * speed + storedVel;     //Assign velocity = moveValues multiplied by speed. Add storedvelocity captured at end of fixed update
             stoppingDamper += Time.deltaTime;
@@ -119,7 +138,7 @@ public class CharMovement : MonoBehaviour
             stoppingTimer += Time.deltaTime / ((int)stoppingDamper / 2);   //Add to stoppingTimer by time/ half our damping value
             rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, stoppingTimer);   //set velocity to a value between velocity and 0, based on our StoppingTimer
         }
-        storedVel = rb.velocity * 0.1f; //Store a tenth of the rb's velocity on this call
+        storedVel = new Vector3(rb.velocity.x, 0, rb.velocity.z) * 0.1f; //Store a tenth of the rb's velocity on this call
 
         //Clamp RB velocity so it never exceeds maximum speed
         if (rb.velocity.magnitude > maxSpeed)
