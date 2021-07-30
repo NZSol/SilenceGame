@@ -46,30 +46,46 @@ public class CharMovement : MonoBehaviour
         }
     }
 
+    Vector3 moveDir = Vector3.zero;
+    public void charMovement(CallbackContext context)
+    {
+    }
+    Vector3 vertical = Vector3.zero;
+    public void Jump(CallbackContext context)
+    {
+        vertical = context.ReadValue<float>() * Vector3.up;
+    }
+
 
     void Update()
     {
         Vector2 stick = input.actions["Move"].ReadValue<Vector2>();
-        if (stick == Vector2.zero)
+        Vector3 vertical = input.actions["Jump"].ReadValue<float>() * Vector3.up;
+
+        switch (stick == Vector2.zero)
         {
-            InputsDetected = false;
+            case true:
+                InputsDetected = false;
+                break;
+            case false:
+                InputsDetected = true;
+                moveVals = (stick.x * rightVector) + (stick.y * forwardVector);
+                break;
         }
-        else
-        {
-            InputsDetected = true;
-        }
-        Vector3 moveDir = (stick.x * rightVector) + (stick.y * forwardVector);
+
+        moveDir = (stick.x * rightVector) + (stick.y * forwardVector);
+
         if (moveDir != Vector3.zero)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
         }
-        moveVals = (stick.x * rightVector) + (stick.y * forwardVector);
+        moveVals = moveVals + vertical;
         print(moveVals);
-        
     }
 
 
     void FixedUpdate()
+
     {
         
         MoveFunc();
