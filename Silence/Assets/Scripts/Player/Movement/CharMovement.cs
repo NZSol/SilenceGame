@@ -21,11 +21,11 @@ public class CharMovement : MonoBehaviour
 
     public float speed = 5f;
     [SerializeField] float jumpForce = 50f;
+    [SerializeField] float fallrate = 5;
     [SerializeField] float airtimeVal = 0f;
 
     bool canMove = true;
     bool InputsDetected = false;
-    [SerializeField] bool canJump = true;
 
     PlayerInput input = null;
     GameObject camObj = null;
@@ -62,7 +62,7 @@ public class CharMovement : MonoBehaviour
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
             }
-            moveVals = (value.x * rightVector) + (value.y * forwardVector);
+            moveVals = ((value.x * rightVector) + (value.y * forwardVector)) * speed + storedVel;
         }
     }
 
@@ -86,7 +86,7 @@ public class CharMovement : MonoBehaviour
                 break;
             case false:
                 InputsDetected = true;
-                moveVals = (stick.x * rightVector) + (stick.y * forwardVector);
+                moveVals = ((stick.x * rightVector) + (stick.y * forwardVector)) * speed + storedVel;
                 break;
         }
 
@@ -96,20 +96,17 @@ public class CharMovement : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
         }
-
-        print(grounded() + " bool func");
-        print(onGround + " " + vertical);
     }
     bool falling = false;
     void JumpFunc()
     {
+        print("hitting");
         if (!onGround)
         {
-            if (jumpTimer < 1 && !falling)
+            if (jumpTimer < 0.5f && !falling)
             {
                 jumpTimer += Time.deltaTime;
                 jumpVal = (jumpCurve.Evaluate(jumpTimer) * Vector3.up) * jumpForce;
-                canJump = false;
                 fallTimer = 0;
             }
             else
@@ -119,17 +116,15 @@ public class CharMovement : MonoBehaviour
             if (falling)
             {
                 jumpTimer = 0;
-                fallTimer += Time.deltaTime;
-                jumpVal = (fallCurve.Evaluate(fallTimer) * -Vector3.up);
-                jumpVal *= Time.deltaTime;
+                fallTimer += Time.deltaTime * 2;
+                jumpVal = (fallCurve.Evaluate(fallTimer) * -Vector3.up) * fallrate;
             }
         }
         if (grounded())
         {
             falling = false;
             onGround = true;
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            print("hit");
+            //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         }
     }
 
@@ -147,11 +142,12 @@ public class CharMovement : MonoBehaviour
     Vector3 storedVel = Vector3.zero;
     void MoveFunc()
     {
-        rb.velocity += jumpVal;
+        moveVals += jumpVal;
+        rb.velocity = moveVals;
         if (moveVals != Vector3.zero && canMove)
         {
             stoppingTimer = 0;   //Assign stopping Lerp timer to 0
-            rb.velocity = (new Vector3(moveVals.x, 0, moveVals.z )* speed + storedVel);     //Assign velocity = moveValues multiplied by speed. Add storedvelocity captured at end of fixed update
+            //rb.velocity = (new Vector3(moveVals.x, 0, moveVals.z )* speed + storedVel);     //Assign velocity = moveValues multiplied by speed. Add storedvelocity captured at end of fixed update
             stoppingDamper += Time.deltaTime;
             stoppingDamper = Mathf.Clamp(stoppingDamper, minDampingMod, maxDampingMod);   //Add to damping and limit to min and max values assigned in editor
         }
@@ -160,12 +156,12 @@ public class CharMovement : MonoBehaviour
             stoppingTimer += Time.deltaTime / ((int)stoppingDamper / 2);   //Add to stoppingTimer by time/ half our damping value
             rb.velocity = Vector3.Lerp(rb.velocity, new Vector3(0, rb.velocity.y, 0), stoppingTimer);   //set velocity to a value between velocity and 0, based on our StoppingTimer
         }
-        storedVel = new Vector3(rb.velocity.x, 0, rb.velocity.z) * 0.1f; //Store a tenth of the rb's velocity on this call
+        storedVel = new Vector3(rb.velocity.x, 0, rb.velocity.z) * 0.1f; //Store a tenth of the rb's x,z velocity on this assignment
 
         //Clamp RB velocity so it never exceeds maximum speed
         if (rb.velocity.magnitude > maxSpeed)
         {
-            rb.velocity = Vector3.ClampMagnitude(new Vector3(rb.velocity.x, 0, rb.velocity.z), maxSpeed);
+            //rb.velocity = Vector3.ClampMagnitude(new Vector3(rb.velocity.x, 0, rb.velocity.z), maxSpeed);
         }
     }
 }
