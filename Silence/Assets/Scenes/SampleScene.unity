@@ -797,7 +797,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2052544125}
   m_Father: {fileID: 1329164034}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1277,7 +1278,6 @@ Transform:
   m_Children:
   - {fileID: 2032688952}
   - {fileID: 1104102977}
-  - {fileID: 2052544125}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1355,20 +1355,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -2.5
-      outSlope: -2.5
-      tangentMode: 34
+      inSlope: -4.217205
+      outSlope: -4.217205
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.03728362
     - serializedVersion: 3
-      time: 0.4
+      time: 0.6
       value: 0
-      inSlope: -2.5
-      outSlope: -2.5
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.0785619
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1379,28 +1379,28 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.07700985
+      outSlope: 0.07700985
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.06125166
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2.4670584
-      outSlope: 2.4670584
+      inSlope: 2.1845102
+      outSlope: 2.1845102
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.03728372
+      inWeight: 0.039946795
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   speed: 5
-  jumpForce: 50
+  jumpForce: 10
+  fallrate: 5
   airtimeVal: 0
-  canJump: 1
   minDampingMod: 1
   maxDampingMod: 3
 --- !u!54 &1329164037
@@ -1912,12 +1912,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052544124}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.8, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 1329164034}
-  m_RootOrder: 2
+  m_Father: {fileID: 1104102977}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &2052544126
 SpriteRenderer:

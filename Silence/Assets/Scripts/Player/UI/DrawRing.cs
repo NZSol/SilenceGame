@@ -19,7 +19,7 @@ public class DrawRing : MonoBehaviour
 
     [SerializeField] LayerMask mask = 1 << 9;
 
-    [SerializeField] GameObject AudioMask = null;
+    public GameObject AudioMask = null;
 
     Vector3 playerOffset = Vector3.zero;
 

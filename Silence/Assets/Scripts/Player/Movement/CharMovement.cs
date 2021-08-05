@@ -162,6 +162,7 @@ public class CharMovement : MonoBehaviour
         if (rb.velocity.magnitude > maxSpeed)
         {
             //rb.velocity = Vector3.ClampMagnitude(new Vector3(rb.velocity.x, 0, rb.velocity.z), maxSpeed);
+            
         }
     }
 }

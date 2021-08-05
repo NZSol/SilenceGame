@@ -7,15 +7,18 @@ public class HostileAudioAssigner : MonoBehaviour
     DrawRing ring = null;
     float radius = 5;
 
+    float audioDisplay = 4f;
+
 
     float audioLevelSource;
 
     [SerializeField] AnimationCurve audioFalloff = new AnimationCurve();
-
+    GameObject audioMask = null;
     
     void Start()
     {
         ring = GetComponentInChildren<DrawRing>();
+        audioMask = GetComponent<DrawRing>().AudioMask;
     }
 
     // Update is called once per frame
@@ -23,6 +26,9 @@ public class HostileAudioAssigner : MonoBehaviour
     {
         radius = ring.radius;
         GetHostilesInArea();
+        audioDisplay = Mathf.Clamp(audioDisplay, 1, 4);
+        audioMask.GetComponent<Renderer>().material.SetFloat("GradientScale", Random.Range(1,2));
+
     }
 
     public Collider[] hitCols;
