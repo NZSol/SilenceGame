@@ -16,13 +16,8 @@ public class CharMovement : MonoBehaviour
     Vector3 moveVals = Vector3.zero;
     Vector2 lookDir = Vector2.zero;
 
-    [SerializeField] AnimationCurve jumpCurve, fallCurve;
-    float jumpTimer = 0f, fallTimer = 0f;
 
     public float speed = 5f;
-    [SerializeField] float jumpForce = 50f;
-    [SerializeField] float fallrate = 5;
-    [SerializeField] float airtimeVal = 0f;
 
     bool canMove = true;
     bool InputsDetected = false;
@@ -30,20 +25,6 @@ public class CharMovement : MonoBehaviour
     PlayerInput input = null;
     GameObject camObj = null;
 
-    bool onGround = true;
-    bool grounded()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.up * -1, out hit, 1.1f))
-        {
-            Debug.DrawRay(transform.position, transform.up * -1.1f, Color.red);
-            if (hit.transform != null)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -53,18 +34,6 @@ public class CharMovement : MonoBehaviour
         camObj = Camera.main.gameObject.transform.parent.gameObject;
     }
 
-    public void UIMoveInput(Vector2 value)
-    {
-        if (!InputsDetected)
-        {
-            Vector3 moveDir = (value.x * rightVector) + (value.y * forwardVector);
-            if (moveDir != Vector3.zero)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
-            }
-            moveVals = ((value.x * rightVector) + (value.y * forwardVector)) * speed + storedVel;
-        }
-    }
 
 
     Vector3 moveDir = Vector3.zero;
@@ -72,12 +41,6 @@ public class CharMovement : MonoBehaviour
     void Update()
     {
         Vector2 stick = input.actions["Move"].ReadValue<Vector2>();
-        float vertical = input.actions["Jump"].ReadValue<float>();
-        if (vertical != 0 || !onGround)
-        {
-            onGround = false;
-            JumpFunc();
-        }
 
         switch (stick == Vector2.zero)
         {
@@ -97,37 +60,19 @@ public class CharMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
         }
     }
-    bool falling = false;
-    void JumpFunc()
+
+    public void UIMoveInput(Vector2 value)
     {
-        print("hitting");
-        if (!onGround)
+        if (!InputsDetected)
         {
-            if (jumpTimer < 0.5f && !falling)
+            Vector3 moveDir = (value.x * rightVector) + (value.y * forwardVector);
+            if (moveDir != Vector3.zero)
             {
-                jumpTimer += Time.deltaTime;
-                jumpVal = (jumpCurve.Evaluate(jumpTimer) * Vector3.up) * jumpForce;
-                fallTimer = 0;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.15F);
             }
-            else
-            {
-                falling = true;
-            }
-            if (falling)
-            {
-                jumpTimer = 0;
-                fallTimer += Time.deltaTime * 2;
-                jumpVal = (fallCurve.Evaluate(fallTimer) * -Vector3.up) * fallrate;
-            }
-        }
-        if (grounded())
-        {
-            falling = false;
-            onGround = true;
-            //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            moveVals = ((value.x * rightVector) + (value.y * forwardVector)) * speed + storedVel;
         }
     }
-
     void FixedUpdate()
     {
         MoveFunc();
