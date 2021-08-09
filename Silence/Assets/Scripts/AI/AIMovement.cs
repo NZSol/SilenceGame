@@ -129,15 +129,6 @@ public class AIMovement : MonoBehaviour
         switch (PatrolCircuit)
         {
             case true:
-                if (Dist < maxRange)
-                {
-                    patrolPntNumber++;
-                    if (patrolPntNumber >= PatrolPoints.Length)
-                    {
-                        patrolPntNumber = 0;
-                    }
-                    agent.SetDestination(target);
-                }
                 break;
             case false:
                 if (Dist < maxRange)
