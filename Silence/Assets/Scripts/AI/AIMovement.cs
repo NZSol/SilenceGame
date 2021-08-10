@@ -70,7 +70,6 @@ public class AIMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookRot), extraRotSpeed * Time.deltaTime);
     }
 
-    public Vector3 offset = Vector3.zero;
     public float DetectionRange = 30f, captureRange = 5f;
     float fovRange = 80f;
     void GetLOS(Vector3 direction)

@@ -166,9 +166,10 @@ GameObject:
   - component: {fileID: 281774534}
   - component: {fileID: 281774533}
   - component: {fileID: 281774532}
+  - component: {fileID: 281774539}
+  - component: {fileID: 281774538}
   - component: {fileID: 281774531}
-  - component: {fileID: 281774537}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +193,7 @@ NavMeshAgent:
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
-  m_AutoRepath: 1
+  m_AutoRepath: 0
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
@@ -216,7 +217,6 @@ MonoBehaviour:
   audioVal: 0
   activeAudioCaster: {fileID: 0}
   extraRotSpeed: 5
-  offset: {x: 0, y: 0, z: 0}
   DetectionRange: 30
   captureRange: 5
   PatrolPoints:
@@ -297,11 +297,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.78, y: 0, z: 4.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1930022313}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &281774537
+--- !u!114 &281774538
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,10 +311,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 281774530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498c962e425c9a34493e6a4708ee3a32, type: 3}
+  m_Script: {fileID: 11500000, guid: 75d325b25de7b1244b1f2533c6b11cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myStates: []
+  validStates:
+  - {fileID: 11400000, guid: 61c729dbdd771bb4b8d2555a105e7776, type: 2}
+  - {fileID: 11400000, guid: d32925f4459780b4b915c4a86008a9d8, type: 2}
+  - {fileID: 11400000, guid: a7cf548b76dfd5347ba88ced7be52a52, type: 2}
+  - {fileID: 11400000, guid: 7c7e09d822ce96142abb75efade4faa8, type: 2}
+  - {fileID: 11400000, guid: 94494871cb09fc64b92a90bcf679ed45, type: 2}
+  incomingAudioLevel: 0
+  activeAudioCaster: {fileID: 0}
+  InAudioRange: 0
+--- !u!114 &281774539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281774530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c06bc008253304aa47b7df15a74ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolPoint:
+  - {fileID: 570359549}
+  - {fileID: 155101155}
+  - {fileID: 725999261}
+  - {fileID: 1202369047}
+  PlayerChar: {fileID: 1329164030}
 --- !u!1 &569106357
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1329164030}
   segments: 50
-  radius: 2
+  radius: 7.61
   radiusMultiplier: 1.5
   mat: {fileID: 2100000, guid: cfb17ad0470afe04cbac80b8a0ee37f4, type: 2}
   widthVal: 0.15
@@ -860,6 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e36e8da85b25bc4798256390c7068bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1329164030}
   audioFalloff:
     serializedVersion: 2
     m_Curve:
@@ -1396,7 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardVector: {x: 0, y: 0, z: 1}
   rightVector: {x: 1, y: 0, z: 0}
-  speed: 5
+  speed: 10
   minDampingMod: 1
   maxDampingMod: 3
 --- !u!54 &1329164037
@@ -1764,6 +1792,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1930022312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930022313}
+  - component: {fileID: 1930022316}
+  - component: {fileID: 1930022315}
+  - component: {fileID: 1930022314}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930022313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930022312}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.027, y: 0.258, z: 0.519}
+  m_LocalScale: {x: 0.75806, y: 0.26382118, z: 0.24101}
+  m_Children: []
+  m_Father: {fileID: 281774536}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1930022314
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930022312}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1930022315
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930022312}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1930022316
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930022312}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!850595691 &1943873391
 LightingSettings:
   m_ObjectHideFlags: 0

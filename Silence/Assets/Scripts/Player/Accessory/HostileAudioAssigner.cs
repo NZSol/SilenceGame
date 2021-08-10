@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HostileAudioAssigner : MonoBehaviour
 {
+    [SerializeField]
+    GameObject player = null;
     DrawRing ring = null;
     float radius = 5;
 
@@ -38,7 +40,7 @@ public class HostileAudioAssigner : MonoBehaviour
         hitCols = Physics.OverlapSphere(transform.position, radius, enemyMask);
         foreach (var col in hitCols)
         {
-            col.gameObject.GetComponent<AIMovement>().InAudioRange = true;
+            col.gameObject.GetComponent<FiniteStateMachine>().InAudioRange = true;
             TrackHostiles();
         }
     }
@@ -49,19 +51,19 @@ public class HostileAudioAssigner : MonoBehaviour
         {
             float dist = Vector3.Distance(transform.position, col.transform.position);
             float curAudioLevel = audioFalloff.Evaluate(dist / audioLevelSource);
-            //float curAudioLevel = Mathf.Lerp(audioLevelSource, audioLevelEnd, dist / audioLevelSource);
-            AIMovement move = col.gameObject.GetComponent<AIMovement>();
-            if (move.activeAudioCaster != this.gameObject)
+
+            FiniteStateMachine machine = col.gameObject.GetComponent<FiniteStateMachine>();
+            if (machine.activeAudioCaster != this.gameObject)
             {
-                if (move.audioVal <= curAudioLevel)
+                if (machine.incomingAudioLevel <= curAudioLevel)
                 {
-                    move.audioVal = curAudioLevel;
-                    move.activeAudioCaster = this.gameObject;
+                    machine.incomingAudioLevel = curAudioLevel;
+                    machine.activeAudioCaster = this.gameObject;
                 }
             }
             else
             {
-                move.audioVal = curAudioLevel;
+                machine.incomingAudioLevel = curAudioLevel;
             }
         }
     }
