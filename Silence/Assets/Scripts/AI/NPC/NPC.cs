@@ -20,16 +20,6 @@ public class NPC : MonoBehaviour
         machine = GetComponent<FiniteStateMachine>();
     }
 
-    public void Start()
-    {
-            
-    }
-
-    public void Update()
-    {
-            
-    }
-
     public GameObject[] patrolPoints
     {
         get

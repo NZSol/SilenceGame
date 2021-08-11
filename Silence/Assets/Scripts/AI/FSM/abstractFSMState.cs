@@ -50,7 +50,7 @@ public abstract class abstractFSMState : ScriptableObject
 
         if (EnteredState)
         {
-            //Debug.Log("Entered state: " + StateType);
+            Debug.Log(agent.name + " Has Entered state: " + StateType);
         }
 
         //Does Agent exist
