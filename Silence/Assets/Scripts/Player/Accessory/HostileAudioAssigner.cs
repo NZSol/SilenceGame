@@ -40,7 +40,7 @@ public class HostileAudioAssigner : MonoBehaviour
         hitCols = Physics.OverlapSphere(transform.position, radius, enemyMask);
         foreach (var col in hitCols)
         {
-            col.gameObject.GetComponent<FiniteStateMachine>().InAudioRange = true;
+            //col.gameObject.GetComponent<FiniteStateMachine>().InAudioRange = true;
             TrackHostiles();
         }
     }
@@ -52,19 +52,19 @@ public class HostileAudioAssigner : MonoBehaviour
             float dist = Vector3.Distance(transform.position, col.transform.position);
             float curAudioLevel = audioFalloff.Evaluate(dist / audioLevelSource);
 
-            FiniteStateMachine machine = col.gameObject.GetComponent<FiniteStateMachine>();
-            if (machine.activeAudioCaster != this.gameObject)
-            {
-                if (machine.incomingAudioLevel <= curAudioLevel)
-                {
-                    machine.incomingAudioLevel = curAudioLevel;
-                    machine.activeAudioCaster = this.gameObject;
-                }
-            }
-            else
-            {
-                machine.incomingAudioLevel = curAudioLevel;
-            }
+            //FiniteStateMachine machine = col.gameObject.GetComponent<FiniteStateMachine>();
+            //if (machine.activeAudioCaster != this.gameObject)
+            //{
+            //    if (machine.incomingAudioLevel <= curAudioLevel)
+            //    {
+            //        machine.incomingAudioLevel = curAudioLevel;
+            //        machine.activeAudioCaster = this.gameObject;
+            //    }
+            //}
+            //else
+            //{
+            //  machine.incomingAudioLevel = curAudioLevel;
+            //}
         }
     }
 }
