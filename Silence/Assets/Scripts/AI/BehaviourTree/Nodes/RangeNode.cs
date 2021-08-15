@@ -8,7 +8,7 @@ class RangeNode : Node
     Transform target;
     Transform origin;
 
-    public RangeNode(float range, Transform target, Transform origin)
+    public RangeNode(float range, Transform target, Transform origin, EnemyAI ai)
     {
         this.range = range;
         this.target = target;

@@ -24,11 +24,14 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] Cover[] availableCover;
     Transform bestCoverPoint;
     NavMeshAgent agent;
+    public List<Node> nodeMemory = new List<Node>();
 
     private Material mat;
 
     private Node rootNode;
 
+    public Node curNode;
+    public Node storedNode;
 
     private void Awake()
     {
@@ -47,32 +50,49 @@ public class EnemyAI : MonoBehaviour
         isCoverAvailableNode coverAvailableNode = new isCoverAvailableNode(availableCover, playerTransform, this);
         GoToCoverNode gotoCoverNode = new GoToCoverNode(agent, this);
         HealthNode healthNode = new HealthNode(this, lowHealthThreshhold);
-        isCoveredNode coveredNode = new isCoveredNode(playerTransform, transform);
+        isCoveredNode coveredNode = new isCoveredNode(playerTransform, transform, this);
         chaseNode chase = new chaseNode(playerTransform, agent, this);
-        RangeNode chasingRangeNode = new RangeNode(chaseRange, playerTransform, transform);
-        RangeNode shootingRangeNode = new RangeNode(shootRange, playerTransform, transform);
+        RangeNode chasingRangeNode = new RangeNode(chaseRange, playerTransform, transform, this);
+        RangeNode shootingRangeNode = new RangeNode(shootRange, playerTransform, transform, this);
         shootNode shootNode = new shootNode(agent, this);
 
-        Sequence chaseSeq = new Sequence(new List<Node> { chasingRangeNode, chase });
-        Sequence shootSeq = new Sequence(new List<Node> { shootingRangeNode, shootNode });
+        Sequence chaseSeq = new Sequence(new List<Node> { chasingRangeNode, chase }, this);
+        Sequence shootSeq = new Sequence(new List<Node> { shootingRangeNode, shootNode }, this);
 
-        Sequence GoToCoverSeq = new Sequence(new List<Node> { coverAvailableNode, gotoCoverNode});
-        Selector findCoverSel = new Selector(new List<Node> { GoToCoverSeq, chaseSeq});
-        Selector TryCoverSel = new Selector(new List<Node> { coveredNode, findCoverSel});
+        Sequence GoToCoverSeq = new Sequence(new List<Node> { coverAvailableNode, gotoCoverNode}, this);
+        Selector findCoverSel = new Selector(new List<Node> { GoToCoverSeq, chaseSeq}, this);
+        Selector TryCoverSel = new Selector(new List<Node> { coveredNode, findCoverSel}, this);
 
-        Sequence mainCoverSeq = new Sequence(new List<Node> { healthNode, TryCoverSel });
-        rootNode = new Selector(new List<Node> { mainCoverSeq, shootSeq, chaseSeq });
+        Sequence mainCoverSeq = new Sequence(new List<Node> { healthNode, TryCoverSel }, this);
+        rootNode = new Selector(new List<Node> { mainCoverSeq, shootSeq, chaseSeq }, this);
     }
 
     private void Update()
     {
         rootNode.Evaluate();
+        if (storedNode != curNode)
+        {
+            storedNode = curNode;
+            StoreState(storedNode);
+            print(storedNode + " Stored");
+            print(curNode + " cur");
+
+        }
+
         if (rootNode.nodeState == NodeState.FAILURE)
         {
             SetColor(Color.red);
         }
     }
 
+    public void StoreState(Node nodeToStore)
+    {
+        nodeMemory.Add(nodeToStore);
+        if (nodeMemory.Count > 3)
+        {
+            nodeMemory.Remove(nodeMemory[0]);
+        }
+    }
 
     public void SetColor(Color color)
     {

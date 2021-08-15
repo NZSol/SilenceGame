@@ -7,15 +7,16 @@ public class isCoveredNode : Node
     Transform target;
     Transform origin;
     float timer = 2;
-    public isCoveredNode(Transform target, Transform origin)
+    public isCoveredNode(Transform target, Transform origin, EnemyAI ai)
     {
         this.target = target;
         this.origin = origin;
+        this.ai = ai;
     }
 
     public override NodeState Evaluate()
     {
-        origin.GetComponent<EnemyAI>().curHealth += Time.deltaTime;
+        ai.curNode = this;
         RaycastHit hit;
         if (Physics.Raycast(origin.position, target.position - origin.position, out hit))
         {

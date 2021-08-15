@@ -5,9 +5,10 @@ using UnityEngine;
 class Sequence : Node
 {
     protected List<Node> nodes = new List<Node>();
-    public Sequence(List<Node> nodes)
+    public Sequence(List<Node> nodes, EnemyAI ai)
     {
         this.nodes = nodes;
+        this.ai = ai;
     }
     public override NodeState Evaluate()
     {

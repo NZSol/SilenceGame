@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class GoToCoverNode : Node
 {
     NavMeshAgent agent;
-    EnemyAI ai;
 
     public GoToCoverNode(NavMeshAgent agent, EnemyAI ai)
     {
@@ -16,6 +15,7 @@ public class GoToCoverNode : Node
 
     public override NodeState Evaluate()
     {
+        ai.curNode = this;
         Transform cover = ai.GetBestCover();
         if(cover == null)
         {
@@ -35,4 +35,5 @@ public class GoToCoverNode : Node
             return NodeState.SUCCESS;
         }
     }
+
 }

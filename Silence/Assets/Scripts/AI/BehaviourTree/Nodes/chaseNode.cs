@@ -7,7 +7,6 @@ public class chaseNode : Node
 {
     Transform target;
     NavMeshAgent agent;
-    EnemyAI ai;
 
     public chaseNode(Transform target, NavMeshAgent agent, EnemyAI ai)
     {
@@ -29,6 +28,7 @@ public class chaseNode : Node
         else
         {
             agent.isStopped = true;
+            Debug.Log("hitting catch");
             return NodeState.SUCCESS;
         }
     }

@@ -7,7 +7,6 @@ public class isCoverAvailableNode : Node
 {
     Cover[] validCover;
     Transform target;
-    EnemyAI ai;
 
     public isCoverAvailableNode(Cover[] covers, Transform target, EnemyAI ai)
     {
@@ -17,6 +16,7 @@ public class isCoverAvailableNode : Node
     }
     public override NodeState Evaluate()
     {
+        ai.curNode = this;
         Transform bestCover = FindBestCoverPoint();
         ai.SetBestCover(bestCover);
         return bestCover != null ? NodeState.SUCCESS : NodeState.FAILURE;
@@ -70,4 +70,5 @@ public class isCoverAvailableNode : Node
         }
         return false;
     }
+
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 class HealthNode : Node
 {
-    private EnemyAI ai;
     private float threshhold;
 
     public HealthNode(EnemyAI ai, float threshhold)
@@ -14,6 +13,7 @@ class HealthNode : Node
 
     public override NodeState Evaluate()
     {
+        ai.curNode = this;
         return ai.curHealth <= threshhold ? NodeState.SUCCESS : NodeState.FAILURE;
     }
 }
