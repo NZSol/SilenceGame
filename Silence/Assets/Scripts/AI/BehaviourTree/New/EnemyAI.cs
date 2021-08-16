@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -32,11 +33,13 @@ public class EnemyAI : MonoBehaviour
 
     public Node curNode;
     public Node storedNode;
+    Text[] text = null;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         mat = GetComponent<MeshRenderer>().material;
+        text = GetComponentsInChildren<Text>();
     }
 
     private void Start()
@@ -56,14 +59,14 @@ public class EnemyAI : MonoBehaviour
         RangeNode shootingRangeNode = new RangeNode(shootRange, playerTransform, transform, this);
         shootNode shootNode = new shootNode(agent, this);
 
-        Sequence chaseSeq = new Sequence(new List<Node> { chasingRangeNode, chase }, this);
-        Sequence shootSeq = new Sequence(new List<Node> { shootingRangeNode, shootNode }, this);
+        Sequence chaseSeq = new Sequence(new List<Node> { chasingRangeNode, chase }, this, nodeMemory);
+        Sequence shootSeq = new Sequence(new List<Node> { shootingRangeNode, shootNode }, this, nodeMemory);
 
-        Sequence GoToCoverSeq = new Sequence(new List<Node> { coverAvailableNode, gotoCoverNode}, this);
+        Sequence GoToCoverSeq = new Sequence(new List<Node> { coverAvailableNode, gotoCoverNode}, this, nodeMemory);
         Selector findCoverSel = new Selector(new List<Node> { GoToCoverSeq, chaseSeq}, this);
         Selector TryCoverSel = new Selector(new List<Node> { coveredNode, findCoverSel}, this);
 
-        Sequence mainCoverSeq = new Sequence(new List<Node> { healthNode, TryCoverSel }, this);
+        Sequence mainCoverSeq = new Sequence(new List<Node> { healthNode, TryCoverSel }, this, nodeMemory);
         rootNode = new Selector(new List<Node> { mainCoverSeq, shootSeq, chaseSeq }, this);
     }
 
@@ -73,10 +76,13 @@ public class EnemyAI : MonoBehaviour
         if (storedNode != curNode)
         {
             storedNode = curNode;
-            StoreState(storedNode);
-            print(storedNode + " Stored");
-            print(curNode + " cur");
+            StoreState(curNode);
 
+        }
+        foreach(Node node in nodeMemory)
+        {
+            print(node);
+            print(nodeMemory.Count);
         }
 
         if (rootNode.nodeState == NodeState.FAILURE)
@@ -88,6 +94,9 @@ public class EnemyAI : MonoBehaviour
     public void StoreState(Node nodeToStore)
     {
         nodeMemory.Add(nodeToStore);
+        text[0].text = nodeMemory[0].ToString();
+        text[1].text = nodeMemory[1].ToString();
+        text[2].text = nodeMemory[2].ToString();
         if (nodeMemory.Count > 3)
         {
             nodeMemory.Remove(nodeMemory[0]);

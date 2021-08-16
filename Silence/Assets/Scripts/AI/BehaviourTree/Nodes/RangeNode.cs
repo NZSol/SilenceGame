@@ -13,10 +13,12 @@ class RangeNode : Node
         this.range = range;
         this.target = target;
         this.origin = origin;
+        this.ai = ai;
     }
 
     public override NodeState Evaluate()
     {
+        ai.curNode = this;
         float dist = Vector3.Distance(target.position, origin.position);
         return dist <= range ? NodeState.SUCCESS : NodeState.FAILURE;
     }

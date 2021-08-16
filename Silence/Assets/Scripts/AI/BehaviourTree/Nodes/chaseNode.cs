@@ -17,6 +17,7 @@ public class chaseNode : Node
 
     public override NodeState Evaluate()
     {
+        ai.curNode = this;
         ai.SetColor(Color.yellow);
         float dist = Vector3.Distance(target.position, agent.transform.position);
         if (dist > 0.5f)
