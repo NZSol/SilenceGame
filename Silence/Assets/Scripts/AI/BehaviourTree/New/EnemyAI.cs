@@ -44,6 +44,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
+        text[0].text = "Entry 0";
+        text[1].text = "Entry 1";
+        text[2].text = "Entry 2";
         _curHealth = initialHealth;
         ConstructBehaviorTree();
     }
